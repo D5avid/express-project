@@ -1,16 +1,19 @@
 const mongoose = require("mongoose");
+const ora = require("ora");
 const { user } = require("../controllers/userController");
-
+const spinner = ora("Connecting to database...");
+const { db } = require("../config/config.default");
 const connectDB = async () => {
-  await mongoose.connect("mongodb://localhost:27017/express-video");
+  spinner.start();
+  await mongoose.connect(db.path);
 };
 
 connectDB()
   .then(() => {
-    console.log("Database connected successfully");
+    spinner.succeed("Database connected successfully");
   })
   .catch((err) => {
-    console.log(err);
+    spinner.fail("Error connecting to database");
   });
 
 module.exports = {
